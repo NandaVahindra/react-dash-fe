@@ -34,6 +34,14 @@ export const DashboardPage = () => {
     const theme = useTheme();
     const backgroundColor = theme.palette.mode === 'light' ? 'white' : '#1a2232';
     const textColor = theme.palette.mode === 'light' ? 'grey.900' : 'white';
+    const revenue = [
+        { desc: 'Revenue', value: '6.7 Bio' },
+        { desc: 'Profitability', value: '4.9 Bio' },
+        { desc: 'OPEX', value: '2.2 Bio'}
+    ];
+    const payload = [
+        { desc: '', value: '2.304 PB' },
+    ];
 
     return (
         <Box sx={{ p: 3 }}>
@@ -102,30 +110,30 @@ export const DashboardPage = () => {
             
             <Grid container spacing={3} mt={4}>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}}>
-                    <CardPrimary count={10} title="Event" desc="Total Events" color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Revenue Overview" loc="Area Jawa Bali" descValues={revenue} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}}>
-                    <CardPrimary count={10} title="Event" desc="Total Events" color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Revenue Overview" loc="Region Jawa Timur" descValues={revenue} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}}>
-                    <CardPrimary count={10} title="Event" desc="Total Events" color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Revenue Overview" loc="Region Jawa Tengah & DIY" descValues={revenue} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}}>
-                    <CardPrimary count={10} title="Event" desc="Total Events" color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Revenue Overview" loc="Region Bali Nusra" descValues={revenue} color={['#005082', '#001F3F']} />
                 </Grid>
             </Grid>
             <Grid container spacing={3} mt={4}>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}}>
-                    <CardPrimary count={10} title="Event" desc="Total Events" color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Payload Overview" loc="Area Jawa Bali" descValues={payload} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}}>
-                    <CardPrimary count={10} title="Event" desc="Total Events" color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Payload Overview" loc="Region Jawa Timur" descValues={payload} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}}>
-                    <CardPrimary count={10} title="Event" desc="Total Events" color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Payload Overview" loc="Region Jawa Tengah & DIY" descValues={payload} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}}>
-                    <CardPrimary count={10} title="Event" desc="Total Events" color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Payload Overview" loc="Region Bali Nusra" descValues={payload} color={['#005082', '#001F3F']} />
                 </Grid>
             </Grid>
         </Box>

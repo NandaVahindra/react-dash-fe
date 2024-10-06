@@ -23,13 +23,13 @@ export const DashboardBox: React.FC<DashboardBoxProps> = ({ count, loc, color })
                     <IconButton sx={{ color: '#fff', backgroundColor: 'rgba(255, 255, 255, 0.1)', marginRight: 1 }}>
                         <EventIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" zIndex={2}>
+                    <Typography variant="body1" component="div" zIndex={2} fontSize={20} fontWeight={'bold'}>
                         Events Supported
                     </Typography>
                 </Box>
 
                 {/* Second Section: Area */}
-                <Typography variant="h6" color="inherit" marginLeft={1} zIndex={2}>
+                <Typography variant="body1" color="inherit" marginLeft={1} zIndex={2}>
                     {loc}
                 </Typography>
                 {/* Third Section: Count */}

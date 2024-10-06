@@ -1,30 +1,47 @@
-import { useEffect } from "react";
-import { Card, CardContent, Typography, Box, useTheme } from '@mui/material';
+import { Card, CardContent, Typography, Box, useTheme, Divider } from '@mui/material';
+
+interface DescValuePair {
+    desc: string;
+    value: string;
+}
 
 interface CardPrimaryProps {
-    count: number;
     title: string;
-    desc: string;
+    loc: string;
+    descValues: DescValuePair[];  // Array of desc-value pairs
     color: Array<string>;
 }
 
-export const CardPrimary: React.FC<CardPrimaryProps> = ({ count, title, desc, color }) => {
+export const CardPrimary: React.FC<CardPrimaryProps> = ({ title, loc, descValues, color }) => {
     const theme = useTheme();
     const backgroundColor = theme.palette.mode === 'light' ? '{color[0]}' : '{color[1]}';
     const textColor = theme.palette.mode === 'light' ? 'grey.900' : 'white';
-    
+
     return (
         <Card sx={{ backgroundColor: backgroundColor, boxShadow: 5, borderRadius: 4 }}>
             <CardContent>
                 <Box>
-                    <Typography variant="h4" component="div" sx={{ color: textColor }}>
-                    {count}
+                    <Typography component="div" sx={{ color: textColor }} fontWeight={'bold'} fontSize={20} textAlign={'center'}>
+                        {title}
                     </Typography>
-                    <Typography variant="body1" sx={{ color: textColor }}>
-                    Total Earning
+                    <Divider sx={{ backgroundColor: textColor, width:'90%', margin:'auto' }} />
+                    <Typography variant="body1" sx={{ color: textColor }} textAlign={'center'} mb={2}>
+                        {loc}
                     </Typography>
+
+                    {/* Map through descValues to render each desc and value */}
+                    {descValues.map((item, index) => (
+                        <Box key={index}>  {/* Ensure each has a unique key */}
+                            <Typography variant="body1" sx={{ color: textColor }} textAlign={'center'}>
+                                {item.desc}
+                            </Typography>
+                            <Typography variant="body1" sx={{ color: textColor }} textAlign={'center'} fontWeight={'bold'} fontSize={40}>
+                                {item.value}
+                            </Typography>
+                        </Box>
+                    ))}
                 </Box>
             </CardContent>
         </Card>
     );
-}
+};
