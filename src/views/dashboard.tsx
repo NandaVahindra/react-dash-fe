@@ -93,46 +93,46 @@ export const DashboardPage = () => {
             </Grid>
 
             {/* Dashboard Cards */}
-            <Grid container spacing={3}>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+            <Grid container spacing={3} justifyContent={'center'}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <DashboardBox count={10} loc="Area Jawa Bali" color={['#005082', '#001F3F']} />
                 </Grid>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <DashboardBox count={20} loc="Region Jawa Timur" color={['#8A2BE2', '#4B0082']} />
                 </Grid>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <DashboardBox count={5} loc="Region Jawa Tengah & DIY" color={['#228B22', '#014421']} />
                 </Grid>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <DashboardBox count={15} loc="Region Bali Nusra" color={['#595959', '#2C2C2C']} />
                 </Grid>
             </Grid>
             
-            <Grid container spacing={3} mt={4}>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+            <Grid container spacing={3} mt={4} justifyContent={'center'}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <CardPrimary title="Revenue Overview" loc="Area Jawa Bali" descValues={revenue} color={['#005082', '#001F3F']} />
                 </Grid>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <CardPrimary title="Revenue Overview" loc="Region Jawa Timur" descValues={revenue} color={['#005082', '#001F3F']} />
                 </Grid>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <CardPrimary title="Revenue Overview" loc="Region Jawa Tengah & DIY" descValues={revenue} color={['#005082', '#001F3F']} />
                 </Grid>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <CardPrimary title="Revenue Overview" loc="Region Bali Nusra" descValues={revenue} color={['#005082', '#001F3F']} />
                 </Grid>
             </Grid>
-            <Grid container spacing={3} mt={4}>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+            <Grid container spacing={3} mt={4} justifyContent={'center'}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <CardPrimary title="Payload Overview" loc="Area Jawa Bali" descValues={payload} color={['#005082', '#001F3F']} />
                 </Grid>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <CardPrimary title="Payload Overview" loc="Region Jawa Timur" descValues={payload} color={['#005082', '#001F3F']} />
                 </Grid>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <CardPrimary title="Payload Overview" loc="Region Jawa Tengah & DIY" descValues={payload} color={['#005082', '#001F3F']} />
                 </Grid>
-                <Grid size={{xs:12, sm:12, md:6, lg:3}}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
                     <CardPrimary title="Payload Overview" loc="Region Bali Nusra" descValues={payload} color={['#005082', '#001F3F']} />
                 </Grid>
             </Grid>
