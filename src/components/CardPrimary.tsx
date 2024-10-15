@@ -1,8 +1,9 @@
 import { Card, CardContent, Typography, Box, useTheme, Divider } from '@mui/material';
+import React from 'react';
 
 interface DescValuePair {
     desc: string;
-    value: string;
+    value: React.ReactNode;
 }
 
 interface CardPrimaryProps {
