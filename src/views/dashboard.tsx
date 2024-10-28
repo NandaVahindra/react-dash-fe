@@ -10,6 +10,9 @@ import { fetchMonths, MonthOption } from '../api/monthFilter';
 import { fetchCategory, CategoryOption } from '../api/categoryFilter';
 import { fetchAction, ActionOption } from '../api/actionFilter';
 import { fetchEventsArea, EventsAreaData } from '../api/eventsAreaData';
+import { fetchEventsRegionEJ, EventsRegionEJData } from '../api/eventsRegionEJData';
+import { fetchEventsRegionCJ, EventsRegionCJData } from '../api/eventsRegionCJData';
+import { fetchEventsRegionBN, EventsRegionBNData } from '../api/eventsRegionBNData';
 
 export const DashboardPage = () => {
     const [monthOptions, setMonthOptions] = useState<MonthOption[]>([]);
@@ -19,6 +22,9 @@ export const DashboardPage = () => {
     const [action, setAction] = useState('');
     const [actionOptions, setActionOptions] = useState<ActionOption[]>([]);
     const [eventsData, setEventsData] = useState<EventsAreaData | null>(null);
+    const [eventsEJData, setEventsEJData] = useState<EventsRegionEJData | null>(null);
+    const [eventsCJData, setEventsCJData] = useState<EventsRegionCJData | null>(null);
+    const [eventsBNData, setEventsBNData] = useState<EventsRegionBNData | null>(null);
 
     // Fetch the months data on component mount
     useEffect(() => {
@@ -43,14 +49,25 @@ export const DashboardPage = () => {
     // Fetch the events data when the month, category, or action changes
 
     const loadEventsData = useCallback(async () => {
+        const startTime = performance.now();  // Record start time
         try {
             // Fetch all event data in parallel
-            const [data] = await Promise.all([
-                fetchEventsArea(month, category, action)
+            const [data, dataEJ, dataCJ, dataBN] = await Promise.all([
+                fetchEventsArea(month, category, action),
+                fetchEventsRegionEJ(month, category, action),
+                fetchEventsRegionCJ(month, category, action),
+                fetchEventsRegionBN(month, category, action)
             ]);
             setEventsData(data); // Update event data
+            setEventsEJData(dataEJ); // Update EJ event data
+            setEventsCJData(dataCJ); // Update CJ event data
+            setEventsBNData(dataBN); // Update BN event data
         } catch (error) {
             console.error('Failed to fetch event data:', error);
+        } finally {
+            const endTime = performance.now();  // Record end time
+            const duration = endTime - startTime;  // Calculate the difference
+            console.log(`API request completed in ${duration.toFixed(2)}ms`);
         }
     }, [month, category, action]);
 
@@ -69,16 +86,41 @@ export const DashboardPage = () => {
     const backgroundColor = theme.palette.mode === 'light' ? 'white' : '#1a2232';
     const textColor = theme.palette.mode === 'light' ? 'grey.900' : 'white';
 
-    const countArea = eventsData?.data.eventCounts || 0;
+    type OverviewItem = {
+        desc: string;
+        value: string;
+      };
+      
+      // Function to create the overview array with customizable unit
+      const createOverview = (descriptions: string[], values: string[], unit: string): OverviewItem[] => {
+        return descriptions.map((desc, index) => ({
+          desc,
+          value: `${values[index]} ${unit}`, // Append the unit to the value
+        }));
+      };
 
-    const revenue = [
-        { desc: 'Revenue', value: '6.7 Bio' },
-        { desc: 'Profitability', value: '4.9 Bio' },
-        { desc: 'OPEX', value: '2.2 Bio'}
-    ];
-    const payload = [
-        { desc: '', value: '2.304 PB' },
-    ];
+    const formatNumber = (num: number): string =>
+    new Intl.NumberFormat('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 1,
+    }).format(num);
+
+    const countArea = formatNumber(eventsData?.data.eventCounts || 0);
+    const revenueArea = createOverview(['Revenue', 'Profitability', 'OPEX'], [formatNumber((eventsData?.data.totals.revenue || 0)/1_000_000_000),formatNumber((eventsData?.data.totals.profitability || 0) / 1_000_000_000),formatNumber((eventsData?.data.totals.opex || 0)/1_000_000_000)], 'Bio');
+    const payloadArea = createOverview([''], [formatNumber((eventsData?.data.totals.payload || 0) / 1_000)], 'PB');
+    const userArea = createOverview([''], [formatNumber((eventsData?.data.totals.user || 0))], '');
+    const countEJ = formatNumber(eventsEJData?.data.eventCounts || 0);
+    const revenueEJ = createOverview(['Revenue', 'Profitability', 'OPEX'], [formatNumber((eventsEJData?.data.totals.revenue || 0)/1_000_000_000), formatNumber((eventsEJData?.data.totals.profitability || 0) / 1_000_000_000), formatNumber((eventsEJData?.data.totals.opex || 0)/1_000_000_000)], 'Bio');
+    const payloadEJ = createOverview([''], [formatNumber((eventsEJData?.data.totals.payload || 0)/1_000)], 'PB');
+    const userEJ = createOverview([''], [formatNumber((eventsEJData?.data.totals.user || 0))], '');
+    const countCJ = formatNumber(eventsCJData?.data.eventCounts || 0);
+    const revenueCJ = createOverview(['Revenue', 'Profitability', 'OPEX'], [formatNumber((eventsCJData?.data.totals.revenue || 0)/1_000_000_000), formatNumber((eventsCJData?.data.totals.profitability || 0) / 1_000_000_000), formatNumber((eventsCJData?.data.totals.opex || 0)/1_000_000_000)], 'Bio');
+    const payloadCJ = createOverview([''], [formatNumber((eventsCJData?.data.totals.payload || 0)/1_000)], 'PB');
+    const userCJ = createOverview([''], [formatNumber((eventsCJData?.data.totals.user || 0))], '');
+    const countBN = formatNumber(eventsBNData?.data.eventCounts || 0);
+    const revenueBN = createOverview(['Revenue', 'Profitability', 'OPEX'], [formatNumber((eventsBNData?.data.totals.revenue || 0)/1_000_000_000), formatNumber((eventsBNData?.data.totals.profitability || 0) / 1_000_000_000), formatNumber((eventsBNData?.data.totals.opex || 0)/1_000_000_000)], 'Bio');
+    const payloadBN = createOverview([''], [formatNumber((eventsBNData?.data.totals.payload || 0)/1_000)], 'PB');
+    const userBN = createOverview([''], [formatNumber((eventsBNData?.data.totals.user || 0))], '');
 
     return (
         <Box sx={{ p: 3 }}>
@@ -128,42 +170,56 @@ export const DashboardPage = () => {
                     <DashboardBox count={countArea} loc="Area Jawa Bali" color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <DashboardBox count={20} loc="Region Jawa Timur" color={['#8A2BE2', '#4B0082']} />
+                    <DashboardBox count={countEJ} loc="Region Jawa Timur" color={['#8A2BE2', '#4B0082']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <DashboardBox count={5} loc="Region Jawa Tengah & DIY" color={['#228B22', '#014421']} />
+                    <DashboardBox count={countCJ} loc="Region Jawa Tengah & DIY" color={['#228B22', '#014421']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <DashboardBox count={15} loc="Region Bali Nusra" color={['#595959', '#2C2C2C']} />
+                    <DashboardBox count={countBN} loc="Region Bali Nusra" color={['#595959', '#2C2C2C']} />
                 </Grid>
             </Grid>
             
             <Grid container spacing={3} mt={4} justifyContent={'center'}>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <CardPrimary title="Revenue Overview" loc="Area Jawa Bali" descValues={revenue} color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Revenue Overview" loc="Area Jawa Bali" descValues={revenueArea} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <CardPrimary title="Revenue Overview" loc="Region Jawa Timur" descValues={revenue} color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Revenue Overview" loc="Region Jawa Timur" descValues={revenueEJ} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <CardPrimary title="Revenue Overview" loc="Region Jawa Tengah & DIY" descValues={revenue} color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Revenue Overview" loc="Region Jawa Tengah & DIY" descValues={revenueCJ} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <CardPrimary title="Revenue Overview" loc="Region Bali Nusra" descValues={revenue} color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Revenue Overview" loc="Region Bali Nusra" descValues={revenueBN} color={['#005082', '#001F3F']} />
                 </Grid>
             </Grid>
             <Grid container spacing={3} mt={4} justifyContent={'center'}>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <CardPrimary title="Payload Overview" loc="Area Jawa Bali" descValues={payload} color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Payload Overview" loc="Area Jawa Bali" descValues={payloadArea} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <CardPrimary title="Payload Overview" loc="Region Jawa Timur" descValues={payload} color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Payload Overview" loc="Region Jawa Timur" descValues={payloadEJ} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <CardPrimary title="Payload Overview" loc="Region Jawa Tengah & DIY" descValues={payload} color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Payload Overview" loc="Region Jawa Tengah & DIY" descValues={payloadCJ} color={['#005082', '#001F3F']} />
                 </Grid>
                 <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
-                    <CardPrimary title="Payload Overview" loc="Region Bali Nusra" descValues={payload} color={['#005082', '#001F3F']} />
+                    <CardPrimary title="Payload Overview" loc="Region Bali Nusra" descValues={payloadBN} color={['#005082', '#001F3F']} />
+                </Grid>
+            </Grid>
+            <Grid container spacing={3} mt={4} justifyContent={'center'}>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
+                    <CardPrimary title="User Overview" loc="Area Jawa Bali" descValues={userArea} color={['#005082', '#001F3F']} />
+                </Grid>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
+                    <CardPrimary title="User Overview" loc="Region Jawa Timur" descValues={userEJ} color={['#005082', '#001F3F']} />
+                </Grid>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
+                    <CardPrimary title="User Overview" loc="Region Jawa Tengah & DIY" descValues={userCJ} color={['#005082', '#001F3F']} />
+                </Grid>
+                <Grid size={{xs:12, sm:12, md:6, lg:3}} sx={{ maxWidth: 400 }}>
+                    <CardPrimary title="User Overview" loc="Region Bali Nusra" descValues={userBN} color={['#005082', '#001F3F']} />
                 </Grid>
             </Grid>
         </Box>

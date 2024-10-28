@@ -1,9 +1,8 @@
-import { useEffect } from "react";
 import { Card, CardContent, Typography, Box, IconButton } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 
 interface DashboardBoxProps {
-    count: number;
+    count: string;
     loc: string;
     color: Array<string>;
 }

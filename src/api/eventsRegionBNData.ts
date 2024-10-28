@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { API_BASE_URL } from './config';
 
-export interface EventsAreaData {
+export interface EventsRegionBNData {
     status: string;
     data: {
         eventCounts: number;
@@ -16,10 +16,10 @@ export interface EventsAreaData {
     };
 }
 
-export const fetchEventsArea = async (month: string, category: string, action: string): Promise<EventsAreaData> => {
+export const fetchEventsRegionBN = async (month: string, category: string, action: string): Promise<EventsRegionBNData> => {
     const token = process.env.REACT_APP_API_TOKEN;
     try {
-        const response = await axios.get<EventsAreaData>(`${API_BASE_URL}/eventsArea`, {
+        const response = await axios.get<EventsRegionBNData>(`${API_BASE_URL}/eventsBNRegion`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
@@ -32,7 +32,7 @@ export const fetchEventsArea = async (month: string, category: string, action: s
 
         return response.data;
     } catch (error) {
-        console.error('Error fetching events area data:', error);
+        console.error('Error fetching events regoin bali nusra data:', error);
         throw error;
     }
 };
