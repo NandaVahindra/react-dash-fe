@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Box from "@mui/material/Box";
-import { MuiSelect } from "../components/MuiSelect";
+import { MultipleSelectChip } from '../components/MultipleSelect';
 import { DashboardBox } from "../components/dashboardBox";
 import Grid from '@mui/material/Grid2';
 import { CardPrimary } from "../components/CardPrimary";
@@ -15,11 +15,23 @@ import { fetchEventsRegionCJ, EventsRegionCJData } from '../api/eventsRegionCJDa
 import { fetchEventsRegionBN, EventsRegionBNData } from '../api/eventsRegionBNData';
 
 export const DashboardPage = () => {
-    const [monthOptions, setMonthOptions] = useState<MonthOption[]>([]);
+    const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
+    const handleMonthChange = (selectedMonths: string[]) => {
+        setSelectedMonths(selectedMonths);
+    }
+    const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+    const handleCategoryChange = (selectedCategory: string[]) => {
+        setSelectedCategory(selectedCategory);
+    }
+    const [selectedAction, setSelectedAction] = useState<string[]>([]);
+    const handleActionChange = (selectedAction: string[]) => {
+        setSelectedAction(selectedAction);
+    }
     const [month, setMonth] = useState('');
-    const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
     const [category, setCategory] = useState('');
     const [action, setAction] = useState('');
+    const [monthOptions, setMonthOptions] = useState<MonthOption[]>([]);
+    const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
     const [actionOptions, setActionOptions] = useState<ActionOption[]>([]);
     const [eventsData, setEventsData] = useState<EventsAreaData | null>(null);
     const [eventsEJData, setEventsEJData] = useState<EventsRegionEJData | null>(null);
@@ -46,8 +58,17 @@ export const DashboardPage = () => {
         loadFilter(); // Call the function to fetch months, categories, and actions
     }, []);
 
-    // Fetch the events data when the month, category, or action changes
+    // Function to build query params and update states
+    const paramsBuilder = useCallback(() => {
+        const monthParam = selectedMonths.join(','); // Comma-separated months
+        const categoryParam = selectedCategory.join(','); // Comma-separated categories
+        const actionParam = selectedAction.join(','); // Comma-separated actions
+        setMonth(monthParam);  // Update month state with selected months
+        setCategory(categoryParam);  // Update category state with selected categories
+        setAction(actionParam);  // Update action state with selected actions
+    }, [selectedMonths, selectedCategory, selectedAction]);
 
+    // Fetch the events data when the month, category, or action changes
     const loadEventsData = useCallback(async () => {
         const startTime = performance.now();  // Record start time
         try {
@@ -72,13 +93,18 @@ export const DashboardPage = () => {
     }, [month, category, action]);
 
     useEffect(() => {
+        paramsBuilder();  // Call the function to build query params
         loadEventsData();  // Call the API when the component loads or filters change
-    }, [loadEventsData]);  // Dependency array: re-fetch data whenever these change
+        console.log('api called');
+    }, [selectedMonths, selectedCategory, selectedAction, paramsBuilder, loadEventsData]);  // Dependency array: re-fetch data whenever these change
 
     const clearFilters = () => {
         setMonth('');       // Reset month to empty
         setCategory('');    // Reset category to empty
         setAction('');      // Reset action to empty
+        setSelectedMonths([]); // Reset selected months
+        setSelectedCategory([]); // Reset selected categories
+        setSelectedAction([]); // Reset selected actions
         loadEventsData();   // Optionally reload data without filters
     };
 
@@ -91,8 +117,8 @@ export const DashboardPage = () => {
         value: string;
       };
       
-      // Function to create the overview array with customizable unit
-      const createOverview = (descriptions: string[], values: string[], unit: string): OverviewItem[] => {
+    // Function to create the overview array with customizable unit
+    const createOverview = (descriptions: string[], values: string[], unit: string): OverviewItem[] => {
         return descriptions.map((desc, index) => ({
           desc,
           value: `${values[index]} ${unit}`, // Append the unit to the value
@@ -127,38 +153,35 @@ export const DashboardPage = () => {
             {/* Top Filters */}
             <Grid container spacing={2} mb={4}>
                 <Grid>
-                    <MuiSelect
+                    <MultipleSelectChip
                         label="Month"
-                        value={month}
-                        options={monthOptions}
-                        onChange={(event) => setMonth(event.target.value)}
-                        helperText=""
+                        value={selectedMonths}
+                        options={monthOptions.map(option => option.label)}
+                        onChange={handleMonthChange}
                     />
                 </Grid>
                 <Grid>
-                    <MuiSelect
-                        label="Event Category"
-                        value={category}
-                        options={categoryOptions}
-                        onChange={(event) => setCategory(event.target.value)}
-                        helperText=""
+                    <MultipleSelectChip
+                        label="Category"
+                        value={selectedCategory}
+                        options={categoryOptions.map(option => option.label)}
+                        onChange={handleCategoryChange}
                     />
                 </Grid>
                 <Grid>
-                    <MuiSelect
+                    <MultipleSelectChip
                         label="Action"
-                        value={action}
-                        options={actionOptions}
-                        onChange={(event) => setAction(event.target.value)}
-                        helperText=""
+                        value={selectedAction}
+                        options={actionOptions.map(option => option.label)}
+                        onChange={handleActionChange}
                     />
                 </Grid>
+
                 <Grid container spacing={3}>
-                    <Button variant="contained" sx={{ height: '100%', color: textColor, backgroundColor: backgroundColor, borderRadius: 2, boxShadow: 3, textTransform: 'none', fontWeight: 'bold', fontSize:16,
+                    <Button variant="contained" sx={{ height: '55px', color: textColor, backgroundColor: backgroundColor, borderRadius: 2, boxShadow: 1, textTransform: 'none', fontWeight: 'bold', fontSize:16,
                         transition: 'transform 0.1s ease-in-out',  // Smooth transition effect
                         '&:hover': {
-                          transform: 'scale(1.1)',
-                          boxShadow: 6,     
+                          transform: 'scale(1.1)'
                         }
                     }} onClick={clearFilters}>Clear</Button>
                 </Grid>
