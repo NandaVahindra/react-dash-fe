@@ -1,3 +1,4 @@
+
 // api/monthsService.ts
 import axios from 'axios';
 import { API_BASE_URL } from './config';
@@ -11,6 +12,7 @@ export interface EventsRegionCJData {
             revenue: number;
             profitability: number;
             payload: number;
+            user: number;
         };
     };
 }

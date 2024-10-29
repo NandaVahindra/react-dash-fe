@@ -11,6 +11,7 @@ export interface EventsRegionBNData {
             revenue: number;
             profitability: number;
             payload: number;
+            user: number;
         };
     };
 }

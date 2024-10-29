@@ -11,6 +11,7 @@ export interface EventsAreaData {
             revenue: number;
             profitability: number;
             payload: number;
+            user: number;
         };
     };
 }

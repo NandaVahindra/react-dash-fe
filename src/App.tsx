@@ -30,18 +30,22 @@ const demoTheme = createTheme({
       palette: {
         background: {
           default: '#edf5f9',  // Light gray background
-          paper: '#ffffff',     // White paper background
+          paper: '#ffffff',    // White paper background
         },
         text: {
           primary: '#333333',  // Dark gray for text
           secondary: '#666666', // Lighter gray for secondary text
         },
         primary: {
-          main: '#e20012',  // Primary color
-          light: '#e20012', // Lighter shade for hover effect
-          dark: '#e20012',  // Darker shade for active effect
+          main: '#e20012',  // Main primary color for selected state
+          light: '#ff4757', // Lighter shade for hover effect
+          dark: '#c20010',  // Darker shade for active effect
         },
-        divider: 'transparent',     // Transparent for dividers
+        action: {
+          hover: '#fbe0e2', // Color for hover state
+          selected: '#fbe0e2', // Color for selected items
+        },
+        divider: 'rgba(0, 0, 0, 0.12)',  // Subtle divider color
       },
     },
     dark: {
@@ -57,7 +61,7 @@ const demoTheme = createTheme({
         primary: {
           main: '#ffffff',  // White primary color (corrected from '#fffff')
         },
-        divider: 'transparent',     // Transparent for dividers
+        divider: 'rgba(0, 0, 0, 0.12)',     // Transparent for dividers
       },
     },
   },

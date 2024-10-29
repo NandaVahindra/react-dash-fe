@@ -11,6 +11,7 @@ export interface EventsRegionEJData {
             revenue: number;
             profitability: number;
             payload: number;
+            user: number;
         };
     };
 }
