@@ -28,7 +28,6 @@ export const DashboardPage = () => {
         setSelectedAction(selectedAction);
     }
     const [month, setMonth] = useState('');
-    const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
     const [category, setCategory] = useState('');
     const [action, setAction] = useState('');
     const [monthOptions, setMonthOptions] = useState<MonthOption[]>([]);
