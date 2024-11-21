@@ -27,7 +27,7 @@ export const MultipleSelectChip: React.FC<MultipleSelectChipProps> = ({ label, o
 
   return (
     <FormControl sx={{width: 200, maxWidth: 400}}>
-      <InputLabel sx={{fontWeight: 600, borderRadius: 3}}>{label}</InputLabel>
+      <InputLabel sx={{fontWeight: 600}}>{label}</InputLabel>
       <Select
         multiple
         value={value}
@@ -49,7 +49,7 @@ export const MultipleSelectChip: React.FC<MultipleSelectChipProps> = ({ label, o
               </Box>
             );
           }}
-        sx={{borderRadius: 3}}
+        sx={{borderRadius: 3, backgroundColor: 'white'}}
       >
         {options.map((option) => (
           <MenuItem

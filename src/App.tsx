@@ -7,12 +7,20 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import type { Navigation, Router } from '@toolpad/core';
 import { DashboardPage } from './views/dashboard';
 import { InfoPage } from './views/info';
+import SsidChartIcon from '@mui/icons-material/SsidChart';
+import { GraphPage } from './views/graph';
 
 const NAVIGATION: Navigation = [
   {
     segment: 'dashboard',
     title: 'Dashboard',
     icon: <DashboardIcon />,
+  },
+  {
+    segment: 'Graph',
+    title: 'Graph',
+    icon: <SsidChartIcon />,
+
   },
   {
     segment: 'Info',
@@ -29,7 +37,7 @@ const demoTheme = createTheme({
     light: {
       palette: {
         background: {
-          default: '#edf5f9',  // Light gray background
+          default: '#f1f4f5',  // Light gray background
           paper: '#ffffff',    // White paper background
         },
         text: {
@@ -83,6 +91,9 @@ function DemoPageContent({ pathname }: { pathname: string }) {
   }
   if ( pathname === '/Info') {
     return <InfoPage />;
+  }
+  if ( pathname === '/Graph') {
+    return <GraphPage />;
   }
   return (
     <DashboardPage />);
